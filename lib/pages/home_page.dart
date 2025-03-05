@@ -40,6 +40,14 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      body: Center(
+        child: Text(
+          "Home Page",
+          style: TextStyle(
+            fontSize: 30,
+          ),
+        ),
+      ),
     );
   }
 }
