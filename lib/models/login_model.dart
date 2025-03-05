@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PasswordModel extends Equatable {
   final String service;
@@ -39,3 +42,53 @@ class PasswordModel extends Equatable {
   @override
   List get props => [time];
 }
+
+Future<void> savePasswords(List<PasswordModel> passwords) async {
+  final db = await SharedPreferences.getInstance();
+  List jsonList = passwords.map((model) => model.toJson()).toList();
+  String data = jsonEncode(jsonList);
+  await db.setString("password", data);
+}
+
+Future<List<PasswordModel>> getPasswords() async {
+  final db = await SharedPreferences.getInstance();
+  String? data = db.getString("password");
+  List<PasswordModel> result = [];
+  if (data != null) {
+    List jsonList = List.from(jsonDecode(data));
+    result = jsonList.map((json) => PasswordModel.fromJson(json)).toList();
+  }
+  return result;
+}
+
+Future<void> deletePassword(PasswordModel password) async {
+  final passwords = await getPasswords();
+  passwords.removeWhere((model) => model == password);
+  await savePasswords(passwords);
+}
+
+Future<void> createPassword(PasswordModel password) async {
+  final passwords = await getPasswords();
+  passwords.removeWhere((model) => model == password);
+  passwords.add(password);
+  await savePasswords(passwords);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
