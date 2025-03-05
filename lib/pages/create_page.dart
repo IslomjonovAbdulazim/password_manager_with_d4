@@ -1,14 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+import '../models/login_model.dart';
+
 class CreatePage extends StatefulWidget {
-  const CreatePage({super.key});
+  final PasswordModel? password;
+
+  const CreatePage({super.key, this.password});
 
   @override
   State<CreatePage> createState() => _CreatePageState();
 }
 
 class _CreatePageState extends State<CreatePage> {
+  TextEditingController serviceController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  MaskTextInputFormatter phoneMask = MaskTextInputFormatter(
+    mask: "(##) ### ##-##",
+    filter: {"#": RegExp(r"[0-9]")},
+  );
+
+  @override
+  void initState() {
+    serviceController.text = widget.password?.service ?? "";
+    phoneController.text = widget.password?.phoneNumber ?? "";
+    emailController.text = widget.password?.email ?? "";
+    passwordController.text = widget.password?.password ?? "";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +65,8 @@ class _FieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField();
+    return TextField(
+
+    );
   }
 }
