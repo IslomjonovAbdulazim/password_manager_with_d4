@@ -2,7 +2,6 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:password_manager_with_d4/pages/onboarding_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/onboarding_model.dart';
 import 'pages/home_page.dart';
@@ -19,7 +18,7 @@ void main() async {
   ]);
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (context) => PasswordManagerApp(),
     ),
   );
@@ -32,7 +31,7 @@ class PasswordManagerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnboardingPage(),
+      home: isHomePage ? HomePage() : OnboardingPage(),
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(
           textScaler: TextScaler.noScaling,
