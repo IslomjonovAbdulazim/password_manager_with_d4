@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -35,10 +36,67 @@ class _CreatePageState extends State<CreatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Password Detail"),
+        actions: [
+          CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              PasswordModel password = PasswordModel(
+                service: serviceController.text.trim(),
+                phoneNumber: phoneController.text.trim(),
+                email: emailController.text.trim(),
+                password: passwordController.text.trim(),
+                time: widget.password?.time ?? DateTime.now(),
+              );
+              createPassword(password);
+              Navigator.pop(context);
+            },
+            child: Text("Save"),
+          ),
+          SizedBox(width: 10),
+        ],
+      ),
       body: SafeArea(
-        child: Column(
-          children: [],
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              _FieldWidget(
+                name: "Service",
+                hint: "Service...",
+                controller: serviceController,
+                focus: FocusNode(),
+                formatter: null,
+                isNumberOnly: false,
+              ),
+              _FieldWidget(
+                name: "Phone Number",
+                hint: "Phone Number...",
+                controller: phoneController,
+                focus: FocusNode(),
+                formatter: phoneMask,
+                isNumberOnly: true,
+              ),
+              _FieldWidget(
+                name: "Email",
+                hint: "Email...",
+                controller: emailController,
+                focus: FocusNode(),
+                formatter: null,
+                isNumberOnly: false,
+              ),
+              _FieldWidget(
+                name: "Password",
+                hint: "Password...",
+                controller: passwordController,
+                focus: FocusNode(),
+                formatter: null,
+                isNumberOnly: false,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -50,7 +108,7 @@ class _FieldWidget extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
   final FocusNode focus;
-  final MaskTextInputFormatter formatter;
+  final MaskTextInputFormatter? formatter;
   final bool isNumberOnly;
 
   const _FieldWidget({
@@ -65,8 +123,27 @@ class _FieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(name),
+          TextField(
+            controller: controller,
+            focusNode: focus,
+            onTapOutside: (value) => focus.unfocus(),
+            maxLength: 100,
+            autocorrect: false,
+            keyboardType: isNumberOnly ? TextInputType.number : null,
+            textInputAction: TextInputAction.next,
+            inputFormatters: formatter != null ? [formatter!] : [],
+            decoration: InputDecoration(
+              counter: SizedBox.shrink(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
