@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../models/login_model.dart';
@@ -24,6 +25,8 @@ class _CreatePageState extends State<CreatePage> {
     filter: {"#": RegExp(r"[0-9]")},
   );
 
+  bool hidePassword = true;
+
   @override
   void initState() {
     serviceController.text = widget.password?.service ?? "";
@@ -33,12 +36,25 @@ class _CreatePageState extends State<CreatePage> {
     super.initState();
   }
 
+  void toggleEye() {
+    hidePassword = !hidePassword;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("Password Detail"),
+        title: Text(
+          "Password Detail",
+          style: GoogleFonts.ubuntuMono(
+            color: Color(0xff1C1C1C),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         actions: [
           CupertinoButton(
             padding: EdgeInsets.zero,
@@ -53,7 +69,14 @@ class _CreatePageState extends State<CreatePage> {
               createPassword(password);
               Navigator.pop(context);
             },
-            child: Text("Save"),
+            child: Text(
+              "Save",
+              style: GoogleFonts.ubuntuMono(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
           SizedBox(width: 10),
         ],
@@ -94,6 +117,8 @@ class _CreatePageState extends State<CreatePage> {
                 focus: FocusNode(),
                 formatter: null,
                 isNumberOnly: false,
+                isHidden: hidePassword,
+                toggleEye: toggleEye,
               ),
             ],
           ),
@@ -110,6 +135,8 @@ class _FieldWidget extends StatelessWidget {
   final FocusNode focus;
   final MaskTextInputFormatter? formatter;
   final bool isNumberOnly;
+  final bool? isHidden;
+  final void Function()? toggleEye;
 
   const _FieldWidget({
     super.key,
@@ -119,6 +146,8 @@ class _FieldWidget extends StatelessWidget {
     required this.focus,
     required this.formatter,
     required this.isNumberOnly,
+    this.isHidden,
+    this.toggleEye,
   });
 
   @override
@@ -128,7 +157,13 @@ class _FieldWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(name),
+          Text(
+            name,
+            style: GoogleFonts.ubuntuMono(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           TextField(
             controller: controller,
             focusNode: focus,
@@ -138,8 +173,43 @@ class _FieldWidget extends StatelessWidget {
             keyboardType: isNumberOnly ? TextInputType.number : null,
             textInputAction: TextInputAction.next,
             inputFormatters: formatter != null ? [formatter!] : [],
+            obscureText: isHidden == false,
+            style: GoogleFonts.ubuntuMono(
+              color: Color(0xff1C1C1C),
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(horizontal: 20),
               counter: SizedBox.shrink(),
+              filled: true,
+              suffixIcon: CupertinoButton(
+                padding: EdgeInsets.zero,
+                onPressed: toggleEye,
+                child: isHidden == null
+                    ? SizedBox.shrink()
+                    : Image.asset(
+                        "assets/eye${isHidden == true ? "_hidden" : ""}.png",
+                        height: 24,
+                        width: 24,
+                        color: Color(0xff758393),
+                      ),
+              ),
+              fillColor: Color(0xffF9F9F9),
+              hintText: hint,
+              hintStyle: GoogleFonts.ubuntuMono(
+                color: Color(0xff758393),
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.black),
+              ),
             ),
           ),
         ],
