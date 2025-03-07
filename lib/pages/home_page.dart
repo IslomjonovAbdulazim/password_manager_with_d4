@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:password_manager_with_d4/models/login_model.dart';
 import 'package:password_manager_with_d4/pages/create_page.dart';
 
@@ -19,7 +20,10 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  void load() {}
+  void load() async {
+    passwords = await getPasswords();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +44,34 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Text(
-          "Home Page",
-          style: TextStyle(
-            fontSize: 30,
-          ),
+      body: SafeArea(
+        child: ListView.builder(
+          padding: EdgeInsets.all(15),
+          itemCount: passwords.length,
+          itemBuilder: (context, index) {
+            final pass = passwords[index];
+            return CupertinoButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {},
+              child: ListTile(
+                title: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(pass.service),
+                    Spacer(),
+                    Text(pass.phoneNumber),
+                  ],
+                ),
+                subtitle: Row(
+                  children: [
+                    Text(DateFormat.yMMMMd().format(pass.time)),
+                    Text(" at "),
+                    Text(DateFormat.Hm().format(pass.time)),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
