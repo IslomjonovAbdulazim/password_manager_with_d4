@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:password_manager_with_d4/models/login_model.dart';
 import 'package:password_manager_with_d4/pages/create_page.dart';
@@ -28,7 +29,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          "Passwords",
+          style: GoogleFonts.ubuntuMono(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         actions: [
           CupertinoButton(
             onPressed: () async {
@@ -40,7 +50,11 @@ class _HomePageState extends State<HomePage> {
               );
               load();
             },
-            child: Icon(CupertinoIcons.add),
+            child: Icon(
+              CupertinoIcons.add,
+              color: Colors.black,
+              size: 28,
+            ),
           ),
         ],
       ),
@@ -51,6 +65,7 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (context, index) {
             final pass = passwords[index];
             return CupertinoButton(
+              color: Color(0xffF8F8F8),
               padding: EdgeInsets.zero,
               onPressed: () async {
                 await Navigator.push(
@@ -67,16 +82,46 @@ class _HomePageState extends State<HomePage> {
                 title: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(pass.service),
+                    Text(
+                      pass.service,
+                      style: GoogleFonts.ubuntuMono(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     Spacer(),
-                    Text(pass.phoneNumber),
+                    Text(
+                      pass.phoneNumber,
+                      style: GoogleFonts.ubuntuMono(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
                 subtitle: Row(
                   children: [
-                    Text(DateFormat.yMMMMd().format(pass.time)),
-                    Text(" at "),
-                    Text(DateFormat.Hm().format(pass.time)),
+                    Text(
+                      DateFormat.yMMMMd().format(pass.time),
+                      style: GoogleFonts.ubuntuMono(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    Text(
+                      " at ",
+                      style: GoogleFonts.ubuntuMono(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    Text(
+                      DateFormat.Hm().format(pass.time),
+                      style: GoogleFonts.ubuntuMono(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
                   ],
                 ),
               ),
