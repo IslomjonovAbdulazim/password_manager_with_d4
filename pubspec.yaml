@@ -22,6 +22,7 @@ dependencies:
   intl: ^0.19.0
   share_plus: ^10.1.4
   smooth_page_indicator: ^1.2.1
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:
@@ -36,3 +37,7 @@ flutter:
   assets:
     - assets/
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"

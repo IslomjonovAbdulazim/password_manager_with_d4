@@ -52,7 +52,17 @@ class _HomePageState extends State<HomePage> {
             final pass = passwords[index];
             return CupertinoButton(
               padding: EdgeInsets.zero,
-              onPressed: () {},
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreatePage(
+                      password: pass,
+                    ),
+                  ),
+                );
+                load();
+              },
               child: ListTile(
                 title: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
