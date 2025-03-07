@@ -23,6 +23,7 @@ dependencies:
   share_plus: ^10.1.4
   smooth_page_indicator: ^1.2.1
   flutter_launcher_icons: ^0.14.3
+  flutter_slidable: ^4.0.0
 
 dev_dependencies:
   flutter_test:
